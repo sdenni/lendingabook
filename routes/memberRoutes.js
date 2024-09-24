@@ -32,10 +32,39 @@ router.get('/', memberController.getAllMembers);
  *               type: string
  *             name:
  *               type: string
+ *             password:
+ *               type: string
  *     responses:
  *       201:
  *         description: Created member
  */
 router.post('/', memberController.createMember);
+
+/**
+ * @swagger
+ * /api/admin:
+ *   post:
+ *     summary: Create a new member
+ *     parameters:
+ *       - in: body
+ *         name: member
+ *         description: Member details
+ *         schema:
+ *           type: object
+ *           required:
+ *             - code
+ *             - name
+ *           properties:
+ *             code:
+ *               type: string
+ *             name:
+ *               type: string
+ *             password:
+ *               type: string
+ *     responses:
+ *       201:
+ *         description: Created member
+ */
+router.post('/', memberController.createAdmin);
 
 module.exports = router;

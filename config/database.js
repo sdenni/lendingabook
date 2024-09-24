@@ -25,7 +25,9 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS members (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       code TEXT,
-      name TEXT
+      name TEXT,
+      password TEXT,
+      role TEXT
     )
   `);
 })

@@ -1,23 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const bookController = require('../controllers/bookController');
+const { authenticateToken, adminOnly } = require('../middleware/auth');
 
 /**
  * @swagger
  * /api/books:
  *   get:
  *     summary: Get all books
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *       200:
  *         description: List of books
+ *       401: 
+ *         description: Unauthorized, Bearer token is missing or invalid
  */
-router.get('/', bookController.getAllBooks);
+router.get('/', authenticateToken, bookController.getAllBooks);
 
 /**
  * @swagger
  * /api/books:
  *   post:
  *     summary: Create a new book
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - in: body
  *         name: book
@@ -41,7 +48,9 @@ router.get('/', bookController.getAllBooks);
  *     responses:
  *       201:
  *         description: Created book
+ *       401: 
+ *         description: Unauthorized, Bearer token is missing or invalid
  */
-router.post('/', bookController.createBook);
+router.post('/', authenticateToken, adminOnly, bookController.createBook);
 
 module.exports = router;
