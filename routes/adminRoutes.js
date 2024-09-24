@@ -7,6 +7,8 @@ const memberController = require('../controllers/memberController');
  * /api/admin:
  *   post:
  *     summary: Create a new admin
+ *     tags:
+ *      - Admin
  *     parameters:
  *       - in: body
  *         name: admin

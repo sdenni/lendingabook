@@ -10,6 +10,8 @@ const { authenticateToken, adminOnly } = require('../middleware/auth');
  *     summary: Get all books
  *     security:
  *       - bearerAuth: []
+ *     tags:
+ *       - Books
  *     responses:
  *       200:
  *         description: List of books
@@ -25,6 +27,8 @@ router.get('/', authenticateToken, bookController.getAllBooks);
  *     summary: Create a new book
  *     security:
  *       - bearerAuth: []
+ *     tags:
+ *       - Books
  *     parameters:
  *       - in: body
  *         name: book

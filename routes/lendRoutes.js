@@ -10,6 +10,8 @@ const { authenticateToken } = require('../middleware/auth');
  *     summary: Lend books to a member
  *     security:
  *       - bearerAuth: []
+ *     tags:
+ *       - Lending
  *     requestBody:
  *       required: true
  *       content:
@@ -40,6 +42,8 @@ router.post('/', authenticateToken, LendController.lendBooks);
  *     summary: Return borrowed books
  *     security:
  *       - bearerAuth: []
+ *     tags:
+ *       - Lending
  *     requestBody:
  *       required: true
  *       content:
@@ -68,6 +72,8 @@ router.post('/return', authenticateToken, LendController.returnBooks);
  *     summary: Calculate penalty for late returns
  *     security:
  *       - bearerAuth: []
+ *     tags:
+ *       - Lending
  *     parameters:
  *       - in: path
  *         name: lendId
