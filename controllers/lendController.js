@@ -4,8 +4,14 @@ class LendController {
   static async lendBooks(req, res) {
     const { memberCode, bookCodes } = req.body; // Pastikan bookCodes adalah array
     try {
-      const lendingId = await LendRepository.lendBooks(memberCode, bookCodes);
-      res.status(201).json({ message: 'Books lent successfully', lendingId });
+      console.log();
+      if(bookCodes.length <= 2){
+        const lendingId = await LendRepository.lendBooks(memberCode, bookCodes);
+        res.status(201).json({ message: 'Books lent successfully', lendingId });
+      } else {
+        res.status(422).json({ message: 'More than 2 books'})
+      }
+      
     } catch (error) {
       res.status(500).json({ error: 'Failed to lend books' });
     }
