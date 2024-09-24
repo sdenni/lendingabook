@@ -30,6 +30,8 @@ const { authenticateToken } = require('../middleware/auth');
  *         description: Books lent successfully
  *       401: 
  *         description: Unauthorized, Bearer token is missing or invalid
+ *       422:
+ *         description: Unprocessable Entity, buku yang dipinjam lebih dari 2
  *       500:
  *         description: Failed to lend books
  */

@@ -1,21 +1,48 @@
 const LendRepository = require('../repositories/lendRepository');
+const BookRepository = require('../repositories/bookRepository');
+const Book = require('../domain/Book');
 
 class LendController {
   static async lendBooks(req, res) {
-    const { memberCode, bookCodes } = req.body; // Pastikan bookCodes adalah array
+    const { memberCode, bookCodes } = req.body;
     try {
-      console.log();
-      if(bookCodes.length <= 2){
-        const lendingId = await LendRepository.lendBooks(memberCode, bookCodes);
-        res.status(201).json({ message: 'Books lent successfully', lendingId });
-      } else {
-        res.status(422).json({ message: 'More than 2 books'})
-      }
-      
+        if (bookCodes.length > 2) {
+            return res.status(422).json({ message: 'Failed, more than 2 books' });
+        }
+
+        const booksUnavailable = [];
+
+        // Validate available books
+        const books = await Promise.all(bookCodes.map(async (code) => {
+            const findBook = new Book(code, "", "", "");
+            const book = await BookRepository.findByCode(findBook);
+            if (!book || !book.isAvailable()) {
+                booksUnavailable.push(book);
+                return null; 
+            }
+            return book;
+        }));
+
+        // validasi book available
+        const availableBooks = books.filter(book => book !== null);
+
+        if (availableBooks.length === bookCodes.length) {
+            const lendingId = await LendRepository.lendBooks(memberCode, bookCodes);
+
+            // stok management
+            await Promise.all(availableBooks.map(async (book) => {
+                book.borrowBook();
+                await BookRepository.updateStock(book);
+            }));
+
+            return res.status(201).json({ message: 'Books lent successfully', lendingId });
+        } else {
+            return res.status(422).json({ message: 'Books lent failed, books unavailable', books: booksUnavailable });
+        }
     } catch (error) {
-      res.status(500).json({ error: 'Failed to lend books' });
+        return res.status(500).json({ error: 'Failed to lend books' });
     }
-  }
+}
 
   static async returnBooks(req, res) {
     const { memberCode, lendId } = req.body;
