@@ -30,6 +30,29 @@ db.serialize(() => {
       role TEXT
     )
   `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS lendings (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      member_code TEXT,
+      borrowed_at DATETIME,
+      due_date DATETIME,
+      returned_at DATETIME,
+      penalty_per_day INTEGER DEFAULT 2000,
+      status TEXT DEFAULT 'active',
+      FOREIGN KEY (member_code) REFERENCES members (code)
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS lending_details (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      lending_id INTEGER,
+      book_code TEXT,
+      FOREIGN KEY (lending_id) REFERENCES lendings (id),
+      FOREIGN KEY (book_code) REFERENCES books (code)
+    )
+  `);
 })
 
 module.exports = db;

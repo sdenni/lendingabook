@@ -15,8 +15,6 @@ class MemberRepository {
     return new Promise(async (resolve, reject) => {
       const { code, name , password } = member;
       
-      console.log(code, name, password)
-      
       const hashedPassword = await bcrypt.hash(password, 10);
       
       db.run('INSERT INTO members (code, name, password, role) VALUES (?,?,?,?)',
