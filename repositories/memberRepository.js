@@ -54,7 +54,7 @@ class MemberRepository {
   static login(code, password) {
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM members WHERE code = ?', [code], async (err, user) => {
-          if (err || !user) return res.status(400).json({ message: 'data anggota tidak ditemukan' });
+          if (err || !user) return reject(err);
           
           const validPassword = await bcrypt.compare(password, user.password);
           if (!validPassword) reject("password salah");
