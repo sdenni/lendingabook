@@ -111,6 +111,18 @@ class LendRepository {
       )
     });
   }
+  
+  static getActiveLendBook(memberCode) {
+    return new Promise((resolve, reject) => {
+      
+      db.all('SELECT ld.* FROM lending_details ld, lendings l WHERE l.id = ld.lending_id AND l.status = "A" AND ld.status = "A" AND l.member_code = ?',
+        [memberCode], function (err, row) {
+          if(err) return reject(err) 
+          resolve(row)
+        }
+      )
+    });
+  }
 }
 
 module.exports = LendRepository;

@@ -11,6 +11,7 @@ const memberRoutes = require('./routes/memberRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const authRoutes = require('./routes/authRoutes');
 const lendRoutes = require('./routes/lendRoutes');
+const reportsRoutes = require('./routes/reportsRoutes');
 
 const app = express();
 app.use(express.json());
@@ -23,6 +24,7 @@ app.use('/api/members', memberRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/lends', lendRoutes);
+app.use('/api/reports', reportsRoutes);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, ()=> {
