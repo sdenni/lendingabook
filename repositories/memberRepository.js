@@ -1,5 +1,8 @@
+const Member = require('../domain/Member'); // Import class Book
+
 const bcrypt = require('bcryptjs');
 const db = require('../config/database');
+
 
 class MemberRepository {
   static findAll() {
@@ -9,6 +12,29 @@ class MemberRepository {
         resolve(rows);
       })
     })
+  }
+  
+  static find(member) {
+    return new Promise((resolve, reject) => {
+      db.get('SELECT * FROM members WHERE code = ?', 
+        [member.code], (err, row) => {
+          if (err) return reject(err);
+          if(row) {
+            resolve(new Member(row.code, row.name, row.password, row.role, row.flag_penalty))
+          }
+        }
+      )
+    })
+  }
+  
+  static updatePenalty(member) {
+    return new Promise(async (resolve, reject) => {      
+      db.run('UPDATE members SET flag_penalty = ? WHERE code = ?',
+        [member.flagPenalty, member.code], function (err) {
+          if(err) reject(err);
+          resolve (1);
+        });
+    });
   }
   
   static create(member, type) {

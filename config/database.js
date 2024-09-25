@@ -27,7 +27,8 @@ db.serialize(() => {
       code TEXT,
       name TEXT,
       password TEXT,
-      role TEXT
+      role TEXT,
+      flag_penalty DATETIME
     )
   `);
 
@@ -39,7 +40,7 @@ db.serialize(() => {
       due_date DATETIME,
       returned_at DATETIME,
       penalty_per_day INTEGER DEFAULT 2000,
-      status TEXT DEFAULT 'active',
+      status TEXT DEFAULT 'A',
       FOREIGN KEY (member_code) REFERENCES members (code)
     )
   `);
@@ -49,6 +50,7 @@ db.serialize(() => {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       lending_id INTEGER,
       book_code TEXT,
+      status TEXT DEFAULT 'A',
       FOREIGN KEY (lending_id) REFERENCES lendings (id),
       FOREIGN KEY (book_code) REFERENCES books (code)
     )

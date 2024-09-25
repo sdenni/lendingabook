@@ -1,9 +1,10 @@
 class Member {
-  constructor(code, name, password, role) {
+  constructor(code, name, password, role, flagPenalty = "") {
     this.code = code;
     this.name = name;
     this.password = password;
     this.role = role;
+    this.flagPenalty = flagPenalty
     this.borrowedBooks = [];
   }
   
@@ -28,6 +29,30 @@ class Member {
     }
     
     return null;
+  }
+  
+  givePenalty() {
+    const currentDate = new Date();
+    const penaltyDays = 3
+    
+    this.flagPenalty = currentDate.setDate(currentDate.getDate() + penaltyDays);
+  }
+  
+  revokePenalty() {
+    this.flagPenalty = null;
+  }
+  
+  isPenalty() {
+    if (!this.flagPenalty) {
+      return false; 
+    }
+
+    const currentDate = new Date();
+    if (currentDate <= this.flagPenalty) {
+      return true;
+    }
+    
+    return false;
   }
   
 }
